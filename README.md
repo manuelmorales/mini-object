@@ -1,48 +1,97 @@
 # MiniObject
 
-This is a sample project to clone and use as a template for creating your own Ruby gems.
-By default, the license is copyright attributed to Workshare ltd.
-For open source projects, you can copy the LICENSE.txt from [MiniCheck](https://github.com/workshare/mini-check).
+A set of tools which will make easier to work with objects instead of classes
+and injecting dependencies.
 
 
-## Quick Start
+## Inline
 
-Clone this repo and follow the "to-do":
+Allows defining objects ad-hoc passing an initialization block.
 
-```bash
-git grep TODO
+```ruby
+homer = Inline.new 'Homer Simpson' do
+  def talk
+    'Doh!'
+  end
+end
+
+homer.talk
+# => 'Doh!'
 ```
 
-Create a repo on GitHub or ask Manuel to do it.
-Once you have it, edit origin to point to it instead:
+## Injectable
 
-```bash
-git remote rm origin
-git remote add origin git@github.com:workshare/my-gem.git
-git push -u origin master
+Makes easier and nicer to assign values and inject dependencies to objects. 
+The key feature is the ability to assign lambdas as way to resolve the value:
+
+```ruby
+class UsersRepository
+  include Injectable
+  attr_injectable :store
+end
+
+users_repo = UsersRepository.new
+users_repo.store{ app.stores.redis }
 ```
 
-Example of refatoring with the command line:
+In the example, if `app.stores.persistent` changes, the repository
+will inmediately see the new store.
 
-```bash
-find -name \*my_class\* -exec rename 's/my_class/service_generator/' {} \;
-find -name \*mini_object\* -exec rename 's/mini_object/mini_me/' {} \;
-git add .
-git commit -m "Renamed files"
 
-git ls-files | xargs sed -i -e 's/MiniObject/MiniMe/g'
-git ls-files | xargs sed -i -e 's/mini_object/mini_object/g'
+## Section
 
-git ls-files | xargs sed -i -e 's/MyClass/ServiceGenerator/g'
-git ls-files | xargs sed -i -e 's/my_class/service_generator/g'
+Allows defining a tree of sections that can be easily traversed.
+`section` will define a sub-section while `let` behaves like RSpec's let,
+it lazy evaluates and memoizes the result of the given block.
 
-git add .
-git commit -m "Renamed content"
 
-rake # To make sure everything is OK
+```ruby
+app = Section.new name: 'app' do |app|
+  root.section :stores do |stores|
+      sessions.let(:redis){ Redis.new }
+      sessions.let(:in_memory){ Hash.new }
+    end
+  end
+end
+
+app.stores.redis
+# => #<Redis...>
 ```
 
 
+## Lazy
+
+A proxy that will lazy evaluate the proxied object.
+Useful when an object expect an dependency byt we want to
+instantiate it only on demand:
+
+```ruby
+users_repository.store = Lazy.new { Redis.new }
+```
+
+This way `Redis.new` will only be  executed when `users_repository.store`
+it is called for the first time.
+
+It also allows defining build callbacks:
+
+```ruby
+users_repository.store = Lazy.new { Redis.new }
+users_repository.build_step(:clear) { |redis| redis.flushdb }
+```
+
+
+## Resolver
+
+A proxy that will always evaluate the given block.
+Useful when an object expect an dependency but we want it 
+to be resolved on demand:
+
+```ruby
+users_repository.store = Lazy.new{ app.stores.redis }
+```
+
+In the example, if `app.stores.redis`, the repository
+will inmediately see the new store.
 
 
 ## Contributing
