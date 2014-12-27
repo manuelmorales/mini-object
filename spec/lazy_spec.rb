@@ -43,4 +43,21 @@ RSpec.describe 'Lazy' do
       expect(subject.to_s).to match('klass.new')
     end
   end
+
+  describe 'build_steps' do
+    it 'invokes them at build time' do
+      subject = Lazy.new { [] }
+      subject.build_step(:add_one) { |array| array << 1 }
+
+      expect(subject.get_obj).to eq([1])
+    end
+
+    it 'allows substituting them' do
+      subject = Lazy.new { [] }
+      subject.build_step(:add_one) { |array| array << 1 }
+      subject.build_step(:add_one) { |array| array << :one }
+
+      expect(subject.get_obj).to eq([:one])
+    end
+  end
 end
