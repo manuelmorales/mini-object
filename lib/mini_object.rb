@@ -1,4 +1,4 @@
-require "mini_object/version"
+require "version"
 
 module MiniObject
   autoload :Section, 'section'

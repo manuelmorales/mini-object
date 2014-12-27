@@ -3,7 +3,7 @@ gem_name = "mini_object"
 
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "#{gem_name}/version"
+require "#{gem_name}"
 
 Gem::Specification.new do |spec|
   spec.name          = gem_name
