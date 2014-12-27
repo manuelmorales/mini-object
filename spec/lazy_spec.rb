@@ -60,4 +60,12 @@ RSpec.describe 'Lazy' do
       expect(subject.get_obj).to eq([:one])
     end
   end
+
+  describe 'build' do
+    it 'assigns the build block' do
+      subject = Lazy.new
+      subject.build { :one }
+      expect(subject.get_obj).to eq :one
+    end
+  end
 end

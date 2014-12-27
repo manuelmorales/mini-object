@@ -25,6 +25,12 @@ module MiniObject
       sections[name] = Lazy.new name, &block
     end
 
+    def describe name, &block
+      let(name).tap do |l|
+        block.call l
+      end
+    end
+
     private
 
     def sections

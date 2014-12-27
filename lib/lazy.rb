@@ -27,6 +27,10 @@ module MiniObject
       build_steps[name] = block
     end
 
+    def build &block
+      @block = block
+    end
+
     def inspect
       prefix = lazy_name ? "#{lazy_name}: " : ""
       steps = " " + build_steps.keys.join(", ") if build_steps.any?

@@ -188,4 +188,15 @@ describe 'Section' do
       expect(subject.my_section.value).to eq subject.object_id
     end
   end
+
+  describe 'describe' do
+    it 'passes the lazy object to the block' do
+      subject.describe :test do |t|
+        t.build{ [] }
+        t.build_step(:add_one) { |a| a << :one }
+      end
+
+      expect(subject.test.get_obj).to eq([:one])
+    end
+  end
 end
