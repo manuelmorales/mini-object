@@ -22,7 +22,7 @@ module MiniObject
     end
 
     def let name, &block
-      sections[name] = Lazy.new name: name, &block
+      sections[name] = Lazy.new name, &block
     end
 
     private

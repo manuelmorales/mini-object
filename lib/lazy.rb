@@ -1,14 +1,11 @@
+require 'delegate'
+
 module MiniObject
   class Lazy < Delegator
-    attr_accessor :name
+    attr_accessor :lazy_name
 
-    def initialize opts = {}, &block
-      opts.each do |k,v|
-        send "#{k}=", v
-      end
-
-      self.name ||= 'anon'
-
+    def initialize name = nil, &block
+      self.lazy_name = name
       @block = block
     end
 
@@ -31,8 +28,12 @@ module MiniObject
     end
 
     def inspect
-      "< #{name}: Lazy(#{formatted_block_source} #{build_steps.keys.join(", ")}) >"
+      prefix = lazy_name ? "#{lazy_name}: " : ""
+      steps = " " + build_steps.keys.join(", ") if build_steps.any?
+      "< #{prefix}Lazy(#{formatted_block_source}#{steps}) >"
     end
+
+    alias to_s inspect
 
     private
 
@@ -42,7 +43,11 @@ module MiniObject
 
     def block_source
       require 'method_source'
-      MethodSource.source_helper(@block.source_location)
+      begin
+        MethodSource.source_helper(@block.source_location)
+      rescue MethodSource::SourceNotFoundError
+        '{???}'
+      end
     end
 
     def formatted_block_source
