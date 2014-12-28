@@ -13,7 +13,7 @@ module MiniObject
 
     def section name, &block
       unless sec = sections[name]
-        sec = Section.new name: name, parent: self
+        sec = self.class.new name: name, parent: self
         sections[name] = sec
       end
 

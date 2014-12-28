@@ -33,11 +33,14 @@ describe 'Section' do
     end
 
     it 'allows nesting' do
+      klass = Class.new Section
+      subject = klass.new name: 'subject' 
+
       subject.section(:first_level) do |first_level|
         first_level.section :second_level
       end
       
-      expect(subject.first_level.second_level).to be_a(Section)
+      expect(subject.first_level.second_level).to be_a(klass)
     end
 
     it 'doesn\'t overwrite if nesting an already existent' do
