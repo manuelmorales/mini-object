@@ -1,9 +1,17 @@
 module MiniObject
   class Tool
+    include Injectable
+
     attr_accessor :name
+    attr_injectable :subject
 
     def initialize name = nil, &block
       @name = name
+      instance_eval &block if block
+    end
+
+    def get
+      subject
     end
   end
 
@@ -15,8 +23,12 @@ module MiniObject
       instance_eval &block if block
     end
 
+    def add_tool name, &block
+      tools[name] = Tool.new(name, &block)
+    end
+
     def tool name
-      tools[name] = Tool.new(name)
+      tools[name]
     end
 
     private
@@ -27,7 +39,7 @@ module MiniObject
 
     def method_missing name, *args
       if tools.has_key? name
-        tools[name]
+        tools[name].get
       else
         raise NotImplementedError.new("Undefined method or tool #{name} for toolbox #{self.name.to_s.inspect}")
       end

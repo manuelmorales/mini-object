@@ -1,6 +1,6 @@
 require_relative 'spec_helper'
 
-describe 'Tool' do
+describe 'Toolbox' do
   subject { Toolbox.new name: 'subject' }
 
   it 'has a name' do
@@ -11,10 +11,22 @@ describe 'Tool' do
   describe 'tools' do
     it 'can be defined at initialization' do
       subject = Toolbox.new do
-        tool :db_connection
+        add_tool :db_connection
       end
 
-      expect(subject.db_connection.name).to eq(:db_connection)
+      expect(subject.tool(:db_connection).name).to eq(:db_connection)
+    end
+
+    it 'passes the initalization block to the tool' do
+      the_connection = double('a db connection') 
+
+      subject = Toolbox.new do
+        add_tool :db_connection do
+          subject { the_connection }
+        end
+      end
+
+      expect(subject.db_connection).to be the_connection
     end
   end
 
