@@ -11,7 +11,7 @@ describe 'Toolbox' do
   describe 'tools' do
     it 'can be defined at initialization' do
       subject = Toolbox.new do
-        add_tool :db_connection
+        tool(:db_connection) { }
       end
 
       expect(subject.tool(:db_connection).name).to eq(:db_connection)
@@ -21,24 +21,27 @@ describe 'Toolbox' do
       the_connection = double('a db connection') 
 
       subject = Toolbox.new do
-        add_tool :db_connection do
+        tool :db_connection do
           subject { the_connection }
         end
       end
 
+      expect(subject).to respond_to :db_connection
       expect(subject.db_connection).to be the_connection
     end
 
-    it 'allows using just tool at initialization time'
-    it 'responds to the method with such name'
+    it 'raises an exception when no tool is found' do
+      expect{ subject.tool(:adadsaad) }.to raise_error(NotImplementedError)
+    end
   end
 
   describe 'boxes' do
     it 'can be defined at initialization' do
       subject = Toolbox.new do
-        add_box :controllers
+        box(:controllers) { }
       end
 
+      expect(subject).to respond_to :controllers
       expect(subject.controllers.name).to eq(:controllers)
     end
 
@@ -46,9 +49,9 @@ describe 'Toolbox' do
       mysql = double('a db connection') 
 
       subject = Toolbox.new do
-        add_box :dbs do
-          add_box :persistent do
-            add_tool :mysql do
+        box :dbs do
+          box :persistent do
+            tool :mysql do
               subject { mysql }
             end
           end
@@ -56,6 +59,10 @@ describe 'Toolbox' do
       end
 
       expect(subject.dbs.persistent.mysql).to be mysql
+    end
+
+    it 'raises an exception when no box is found' do
+      expect{ subject.box(:adadsaad) }.to raise_error(NotImplementedError)
     end
   end
 
