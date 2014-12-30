@@ -28,6 +28,35 @@ describe 'Toolbox' do
 
       expect(subject.db_connection).to be the_connection
     end
+
+    it 'allows using just tool at initialization time'
+    it 'responds to the method with such name'
+  end
+
+  describe 'boxes' do
+    it 'can be defined at initialization' do
+      subject = Toolbox.new do
+        add_box :controllers
+      end
+
+      expect(subject.controllers.name).to eq(:controllers)
+    end
+
+    it 'passes the initalization block to the box' do
+      mysql = double('a db connection') 
+
+      subject = Toolbox.new do
+        add_box :dbs do
+          add_box :persistent do
+            add_tool :mysql do
+              subject { mysql }
+            end
+          end
+        end
+      end
+
+      expect(subject.dbs.persistent.mysql).to be mysql
+    end
   end
 
   it 'provides a meaningful method not found exeception' do
