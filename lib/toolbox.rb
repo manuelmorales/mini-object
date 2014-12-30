@@ -1,9 +1,15 @@
 module MiniObject
   class Toolbox
     attr_accessor :name
+    attr_accessor :parent
 
-    def initialize name = nil, &block
+    def initialize name = nil, attrs = {}, &block
+      attrs.each do |k,v|
+        send "#{k}=", v
+      end
+
       @name = name
+
       instance_eval &block if block
     end
 
@@ -27,6 +33,20 @@ module MiniObject
       instance_eval File.read(path), path
     end
 
+    def ancestors
+      parent ? (parent.ancestors + [parent]) : []
+    end
+
+    def root
+      ancestors.first
+    end
+
+    def to_s
+      "< #{name}: #{(boxes.keys + tools.keys).join(", ")} >"
+    end
+
+    alias inspect to_s
+
     private
 
     def tools
@@ -38,7 +58,7 @@ module MiniObject
     end
 
     def set_tool name, &block
-      tools[name] = Tool.new(name, &block)
+      tools[name] = Tool.new(name, parent: self, &block)
     end
 
     def get_tool name
@@ -46,7 +66,7 @@ module MiniObject
     end
 
     def set_box name, &block
-      boxes[name] = self.class.new(name, &block)
+      boxes[name] = self.class.new(name, parent: self, &block)
     end
 
     def get_box name
@@ -59,7 +79,7 @@ module MiniObject
       elsif boxes.has_key? name
         boxes[name]
       else
-        not_found!(name)
+        no_method! name
       end
     end
 
@@ -67,8 +87,12 @@ module MiniObject
       !!(tools[name] || boxes[name])
     end
 
+    def no_method! name
+      raise NoMethodError.new("Undefined method #{name} for toolbox #{self.inspect}")
+    end
+
     def not_found! name
-      raise NotImplementedError.new("Undefined method #{name} for toolbox #{self.inspect}")
+      raise NotImplementedError.new("No tool or box #{name} found for toolbox #{self.inspect}")
     end
   end
 end

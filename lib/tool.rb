@@ -3,8 +3,13 @@ module MiniObject
     include Injectable
 
     attr_accessor :name
+    attr_accessor :parent
 
-    def initialize name = nil, &block
+    def initialize name = nil, attrs = {}, &block
+      attrs.each do |k,v|
+        send "#{k}=", v
+      end
+
       @name = name
       @subject_block = block
     end
@@ -22,6 +27,14 @@ module MiniObject
     end
 
     alias define define_singleton_method
+
+    def ancestors
+      parent ? (parent.ancestors + [parent]) : []
+    end
+
+    def root
+      ancestors.first
+    end
 
     private
 

@@ -54,5 +54,40 @@ describe 'Tool' do
     end
   end
 
-  it 'has a root'
+  it 'has a parent' do
+    subject = Toolbox.new do
+      box :dbs do
+        tool :mysql do
+        end
+      end
+    end
+
+    expect(subject.dbs.tool(:mysql).parent).to be subject.dbs
+  end
+
+  it 'has ancestors' do
+    subject = Toolbox.new :root do
+      box :dbs do
+        box :persistent do
+          tool :mysql do
+          end
+        end
+      end
+    end
+
+    expect(subject.dbs.persistent.tool(:mysql).ancestors).to eq [subject, subject.dbs, subject.dbs.persistent]
+  end
+
+  it 'has a root' do
+    subject = Toolbox.new :root do
+      box :dbs do
+        box :persistent do
+          tool :mysql do
+          end
+        end
+      end
+    end
+
+    expect(subject.dbs.persistent.tool(:mysql).root).to be subject
+  end
 end

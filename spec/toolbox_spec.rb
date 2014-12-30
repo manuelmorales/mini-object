@@ -68,7 +68,7 @@ describe 'Toolbox' do
   end
 
   it 'provides a meaningful method not found exeception' do
-    expect{ subject.asdasdad }.to raise_error(NotImplementedError)
+    expect{ subject.asdasdad }.to raise_error(NoMethodError)
   end
 
   it 'evaluates files' do
@@ -85,5 +85,34 @@ describe 'Toolbox' do
     expect(subject.dbs.mysql).to eq :mysql_database
   end
 
-  it 'has a root'
+  it 'has a parent' do
+    subject = Toolbox.new do
+      box :dbs do
+      end
+    end
+
+    expect(subject.dbs.parent).to be subject
+  end
+
+  it 'has ancestors' do
+    subject = Toolbox.new :root do
+      box :dbs do
+        box :persistent do
+        end
+      end
+    end
+
+    expect(subject.dbs.persistent.ancestors).to eq [subject, subject.dbs]
+  end
+
+  it 'has a root' do
+    subject = Toolbox.new :root do
+      box :dbs do
+        box :persistent do
+        end
+      end
+    end
+
+    expect(subject.dbs.persistent.root).to be subject
+  end
 end
