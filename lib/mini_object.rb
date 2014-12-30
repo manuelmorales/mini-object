@@ -1,7 +1,6 @@
 require "version"
 
 module MiniObject
-  autoload :Section, 'section'
   autoload :Lazy, 'lazy'
   autoload :Injectable, 'injectable'
   autoload :Resolver, 'resolver'
