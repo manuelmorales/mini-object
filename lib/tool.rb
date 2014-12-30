@@ -21,6 +21,8 @@ module MiniObject
       end
     end
 
+    alias define define_singleton_method
+
     private
 
     def get_subject

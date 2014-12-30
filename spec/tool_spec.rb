@@ -30,5 +30,16 @@ describe 'Tool' do
       tool = Tool.new
       expect{ tool.get }.to raise_error(NotImplementedError)
     end
+
+    it 'define' do
+      a_piece = double('a piece')
+
+      tool = Tool.new :array do
+        subject { [piece] }
+        define(:piece) { a_piece }
+      end
+
+      expect(tool.get).to eq [a_piece]
+    end
   end
 end
