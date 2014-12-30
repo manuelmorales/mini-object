@@ -6,7 +6,7 @@ module MiniObject
 
     def initialize name = nil, &block
       @name = name
-      instance_eval &block if block
+      @subject_block = block
     end
 
     def get
@@ -35,7 +35,7 @@ module MiniObject
 
     def build_subject
       if @subject_block
-        @subject_block.call
+        instance_eval &@subject_block
       else
         raise NotImplementedError.new("Undefined subject for #{self.inspect}")
       end

@@ -22,7 +22,7 @@ describe 'Toolbox' do
 
       subject = Toolbox.new do
         tool :db_connection do
-          subject { the_connection }
+          the_connection
         end
       end
 
@@ -46,19 +46,20 @@ describe 'Toolbox' do
     end
 
     it 'passes the initalization block to the box' do
-      mysql = double('a db connection') 
+      mysql = []
 
       subject = Toolbox.new do
         box :dbs do
           box :persistent do
             tool :mysql do
-              subject { mysql }
+              mysql << some_definition
             end
+            tool(:mysql).define(:some_definition) { :some }
           end
         end
       end
 
-      expect(subject.dbs.persistent.mysql).to be mysql
+      expect(subject.dbs.persistent.mysql).to eq [:some]
     end
 
     it 'raises an exception when no box is found' do
@@ -69,4 +70,20 @@ describe 'Toolbox' do
   it 'provides a meaningful method not found exeception' do
     expect{ subject.asdasdad }.to raise_error(NotImplementedError)
   end
+
+  it 'evaluates files' do
+    file = Tempfile.new 'test'
+    file.write <<-FILE
+      box :dbs do
+        tool(:mysql){ :mysql_database }
+      end
+    FILE
+    file.close
+
+    subject.eval_file file.path
+
+    expect(subject.dbs.mysql).to eq :mysql_database
+  end
+
+  it 'has a root'
 end

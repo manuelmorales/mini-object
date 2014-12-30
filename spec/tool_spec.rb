@@ -11,7 +11,7 @@ describe 'Tool' do
       expect(Array).not_to receive(:new)
 
       tool = Tool.new :array do
-        subject { Array.new }
+        Array.new
       end
     end
 
@@ -19,7 +19,7 @@ describe 'Tool' do
       expect(Array).to receive(:new).once.and_return([])
 
       tool = Tool.new :array do
-        subject { Array.new }
+        Array.new
       end
 
       expect(tool.get).to eq []
@@ -35,22 +35,24 @@ describe 'Tool' do
       a_piece = double('a piece')
 
       tool = Tool.new :array do
-        subject { [piece] }
-        define(:piece) { a_piece }
+        [piece]
       end
+      tool.define(:piece) { a_piece }
 
       expect(tool.get).to eq [a_piece]
     end
 
     it 'allows overriding old methods with new methods' do
       tool = Tool.new :array do
-        subject { [piece] }
-        define(:piece) { :original_piece }
+        [piece]
       end
 
+      tool.define(:piece) { :original_piece }
       tool.define(:piece) { :new_piece }
 
       expect(tool.get).to eq [:new_piece]
     end
   end
+
+  it 'has a root'
 end

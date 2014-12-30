@@ -23,6 +23,10 @@ module MiniObject
       end
     end
 
+    def eval_file path
+      instance_eval File.read(path), path
+    end
+
     private
 
     def tools
