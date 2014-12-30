@@ -31,7 +31,7 @@ describe 'Tool' do
       expect{ tool.get }.to raise_error(NotImplementedError)
     end
 
-    it 'define' do
+    it 'allows defining instance methods' do
       a_piece = double('a piece')
 
       tool = Tool.new :array do
@@ -40,6 +40,17 @@ describe 'Tool' do
       end
 
       expect(tool.get).to eq [a_piece]
+    end
+
+    it 'allows overriding old methods with new methods' do
+      tool = Tool.new :array do
+        subject { [piece] }
+        define(:piece) { :original_piece }
+      end
+
+      tool.define(:piece) { :new_piece }
+
+      expect(tool.get).to eq [:new_piece]
     end
   end
 end
