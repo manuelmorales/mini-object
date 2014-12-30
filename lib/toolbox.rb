@@ -1,20 +1,4 @@
 module MiniObject
-  class Tool
-    include Injectable
-
-    attr_accessor :name
-    attr_injectable :subject
-
-    def initialize name = nil, &block
-      @name = name
-      instance_eval &block if block
-    end
-
-    def get
-      subject
-    end
-  end
-
   class Toolbox
     attr_accessor :name
 
