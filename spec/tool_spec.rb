@@ -35,9 +35,9 @@ describe 'Tool' do
       a_piece = double('a piece')
 
       tool = Tool.new :array do
+        define(:piece) { a_piece }
         [piece]
       end
-      tool.define(:piece) { a_piece }
 
       expect(tool.get).to eq [a_piece]
     end

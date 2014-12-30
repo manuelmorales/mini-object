@@ -52,9 +52,9 @@ describe 'Toolbox' do
         box :dbs do
           box :persistent do
             tool :mysql do
+              define(:some_definition) { :some }
               mysql << some_definition
             end
-            tool(:mysql).define(:some_definition) { :some }
           end
         end
       end
