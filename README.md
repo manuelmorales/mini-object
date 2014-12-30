@@ -38,25 +38,11 @@ In the example, if `app.stores.persistent` changes, the repository
 will inmediately see the new store.
 
 
-## Section
+## Toolbox
 
-Allows defining a tree of sections that can be easily traversed.
-`section` will define a sub-section while `let` behaves like RSpec's let,
-it lazy evaluates and memoizes the result of the given block.
+<!-- TODO -->
 
-
-```ruby
-app = Section.new name: 'app' do |app|
-  root.section :stores do |stores|
-      sessions.let(:redis){ Redis.new }
-      sessions.let(:in_memory){ Hash.new }
-    end
-  end
-end
-
-app.stores.redis
-# => #<Redis...>
-```
+Documentations comming soon.
 
 
 ## Lazy
