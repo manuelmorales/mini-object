@@ -108,4 +108,12 @@ describe 'Tool' do
 
     expect(subject.dbs.persistent.mysql).to be :external_result
   end
+
+  it 'gives the original toolbox as an argument' do
+    given = nil
+    subject = Toolbox.new :root do |s|
+      given = s
+    end
+    expect(given).to be subject
+  end
 end

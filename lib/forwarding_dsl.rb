@@ -2,8 +2,6 @@ module MiniObject
   class ForwardingDSL
     include Forwardable
 
-    attr_reader :__getobj__
-
     def initialize obj, *delegates
       @__getobj__ = obj
 
@@ -14,7 +12,7 @@ module MiniObject
 
     def evaluate &block
       @self_before_instance_eval = eval "self", block.binding
-      instance_eval &block
+      instance_exec @__getobj__, &block
     end
 
     def method_missing(method, *args, &block)
