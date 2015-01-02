@@ -7,4 +7,5 @@ module MiniObject
   autoload :Inline, 'inline'
   autoload :Toolbox, 'toolbox'
   autoload :Tool, 'tool'
+  autoload :ForwardingDSL, 'forwarding_dsl'
 end
