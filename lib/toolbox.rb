@@ -3,6 +3,25 @@ module MiniObject
     attr_accessor :name
     attr_accessor :parent
 
+    class DSL
+      extend Forwardable
+
+      def_delegators :@toolbox, :box, :tool, :eval_file, :root
+
+      def initialize toolbox
+        @toolbox = toolbox
+      end
+
+      def evaluate &block
+        @self_before_instance_eval = eval "self", block.binding
+        instance_eval &block
+      end
+
+      def method_missing(method, *args, &block)
+        @self_before_instance_eval.send method, *args, &block
+      end
+    end
+
     def initialize name = nil, attrs = {}, &block
       attrs.each do |k,v|
         send "#{k}=", v
@@ -10,7 +29,7 @@ module MiniObject
 
       @name = name
 
-      instance_eval &block if block
+      DSL.new(self).evaluate(&block) if block
     end
 
     def box name, &block

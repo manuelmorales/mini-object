@@ -90,4 +90,22 @@ describe 'Tool' do
 
     expect(subject.dbs.persistent.tool(:mysql).root).to be subject
   end
+
+  def external_method
+    :external_result
+  end
+
+  it 'allows calling methods defined outised the block' do
+    subject = Toolbox.new :root do
+      box :dbs do
+        box :persistent do
+          tool :mysql do
+            external_method
+          end
+        end
+      end
+    end
+
+    expect(subject.dbs.persistent.mysql).to be :external_result
+  end
 end

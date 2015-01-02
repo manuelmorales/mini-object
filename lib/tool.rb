@@ -5,6 +5,25 @@ module MiniObject
     attr_accessor :name
     attr_accessor :parent
 
+    class DSL
+      extend Forwardable
+
+      def_delegators :@tool, :define
+
+      def initialize tool
+        @tool = tool
+      end
+
+      def evaluate &block
+        @self_before_instance_eval = eval "self", block.binding
+        instance_eval &block
+      end
+
+      def method_missing(method, *args, &block)
+        @self_before_instance_eval.send method, *args, &block rescue binding.pry
+      end
+    end
+
     def initialize name = nil, attrs = {}, &block
       attrs.each do |k,v|
         send "#{k}=", v
@@ -26,7 +45,13 @@ module MiniObject
       end
     end
 
-    alias define define_singleton_method
+    def define name, &block
+      dsl.define_singleton_method name, &block
+    end
+
+    def dsl
+      @dsl ||= DSL.new self
+    end
 
     def ancestors
       parent ? (parent.ancestors + [parent]) : []
@@ -48,7 +73,7 @@ module MiniObject
 
     def build_subject
       if @subject_block
-        instance_eval &@subject_block
+        dsl.evaluate &@subject_block
       else
         raise NotImplementedError.new("Undefined subject for #{self.inspect}")
       end
