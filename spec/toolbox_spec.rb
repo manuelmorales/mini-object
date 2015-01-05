@@ -115,4 +115,10 @@ describe 'Toolbox' do
 
     expect(subject.dbs.persistent.root).to be subject
   end
+
+  it 'calling the dsl through #evaluate' do
+    subject = Toolbox.new
+    subject.evaluate { box(:mysql){} }
+    expect(subject.mysql).to be_a Toolbox
+  end
 end

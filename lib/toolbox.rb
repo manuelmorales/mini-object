@@ -47,6 +47,10 @@ module MiniObject
 
     alias inspect to_s
 
+    def evaluate &block
+      dsl.evaluate &block
+    end
+
     private
 
     def tools
