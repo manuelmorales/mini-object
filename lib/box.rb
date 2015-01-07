@@ -10,23 +10,6 @@ module MiniObject
       end
     end
 
-    def self.let name, &block
-      attr_accessor name
-
-      define_method name do
-        var = :"@#{name}"
-
-        instance_variable_get(var) || 
-          instance_variable_set(var, dsl.evaluate(&block))
-      end
-    end
-
-    def self.evaluates name, &block
-      define_method name do
-        dsl.evaluate(&block)
-      end
-    end
-
     def to_s
       "< #{self.class.name} : #{added_methods.join(", ")} >"
     end
