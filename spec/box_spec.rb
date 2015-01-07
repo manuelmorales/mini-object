@@ -11,9 +11,7 @@ describe 'Box' do
     }
 
     stub_const 'BoxApp', Class.new(Box) {
-      def stores
-        @stores ||= Stores.new
-      end
+      let(:stores) { Stores.new }
     }
 
     expect(BoxApp.new.stores.memory).to eq :memory_store
@@ -24,37 +22,29 @@ describe 'Box' do
     stub_const 'Stores', Class.new(Box) {
       attr_accessor :config
 
-      def initialize attrs = {}
-        attrs.each do |k,v|
-          send "#{k}=", v
-        end
-      end
+      evaluates(:hash_based) { Hash.new }
+      evaluates(:array_based) { Array.new }
 
-      def hash; {}; end
-      def array; []; end
-
-      def default
+      evaluates :default do
         case config[:default]
-        when 'array' then array
-        when 'hash' then hash
+        when 'array' then array_based
+        when 'hash' then hash_based
+        else
+          raise('invalid default')
         end
       end
     }
 
     stub_const 'Config', Class.new(Box) {
-      def stores
-        @stores ||= { default: 'hash' }
-      end
+      let(:stores) { { default: 'hash' } }
     }
 
     stub_const 'BoxApp', Class.new(Box) {
-      def stores
+      let :stores do
         @stores ||= Stores.new config: config.stores
       end
 
-      def config
-        @config ||= Config.new
-      end
+      let(:config) { Config.new }
     }
 
     subject = BoxApp.new
