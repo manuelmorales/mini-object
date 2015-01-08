@@ -63,5 +63,11 @@ module MiniObject
         end
       end
     end
+
+    def attributes= attrs
+      attrs.each do |k,v|
+        public_send "#{k}=", v
+      end
+    end
   end
 end
