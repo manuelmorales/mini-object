@@ -13,3 +13,6 @@ include MiniObject
 
 $LOAD_PATH.unshift File.expand_path('spec/support')
 
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
+
