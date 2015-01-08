@@ -1,7 +1,7 @@
 module MiniObject
   module RemarkableInspect
     def to_s
-      "< #{self.class.name} : #{remarkable_methods.join(", ")} >"
+      "< #{remarkable_name} : #{remarkable_methods.join(", ")} >"
     end
 
     alias inspect to_s
@@ -10,8 +10,14 @@ module MiniObject
       klass.extend ClassMethods
     end
 
+    private
+
     def remarkable_methods
       self.class.remarkable_methods
+    end
+
+    def remarkable_name
+      self.class.name
     end
 
     module ClassMethods
