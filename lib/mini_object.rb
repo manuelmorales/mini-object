@@ -8,4 +8,5 @@ module MiniObject
   autoload :Toolbox, 'toolbox'
   autoload :Tool, 'tool'
   autoload :ForwardingDSL, 'forwarding_dsl'
+  autoload :RemarkableInspect, 'remarkable_inspect'
 end

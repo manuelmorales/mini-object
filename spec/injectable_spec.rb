@@ -63,4 +63,19 @@ RSpec.describe 'Injectable' do
     subject { subject_class }
     it_behaves_like 'having an injectable name'
   end
+
+  describe '#attributes=' do
+    let(:subject_class) do
+      Class.new do
+        include Injectable
+        cattr_injectable :name
+      end
+    end
+
+    it 'assings each attr' do
+      subject = subject_class
+      subject.attributes=({ name: 'MyName' })
+      expect(subject.name).to eq 'MyName'
+    end
+  end
 end

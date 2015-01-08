@@ -13,7 +13,11 @@ homer = Inline.new 'Homer Simpson' do
   def talk
     'Doh!'
   end
+
+  def sleep
+  end
 end
+# => < Homer Simpson / Inline : talk, sleep >
 
 homer.talk
 # => 'Doh!'
@@ -38,17 +42,28 @@ In the example, if `app.stores.persistent` changes, the repository
 will inmediately see the new store.
 
 
-## Toolbox
+## RemarkableInspect
 
-<!-- TODO -->
+Provides an `inspect` and `to_s` which focus on methods:
 
-Documentations comming soon.
+```ruby
+class Application
+  include RemarkableInspect
 
+  def config; end
+  def config=; end
+  def stores; end
+end
+# => Application( config/=, stores )
+
+Application.new
+# => < Application : config/=, stores >
+```
 
 ## Lazy
 
 A proxy that will lazy evaluate the proxied object.
-Useful when an object expect an dependency byt we want to
+Useful when an object expect an dependency but we want to
 instantiate it only on demand:
 
 ```ruby

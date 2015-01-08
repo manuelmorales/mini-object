@@ -12,7 +12,7 @@ RSpec.describe 'Inline' do
   end
 
   it 'has an inspect and to_s' do
-    subject = Inline.new do
+    subject = Inline.new 'some name' do
       def bark
         'woof'
       end
@@ -22,8 +22,7 @@ RSpec.describe 'Inline' do
       end
     end
 
-
-    expect(subject.inspect).to eq("< MiniObject::Inline: bark, sleep >")
-    expect(subject.to_s).to eq("< MiniObject::Inline: bark, sleep >")
+    expect(subject.inspect).to eq("< some name / Inline : bark, sleep >")
+    expect(subject.to_s).to eq("< some name / Inline : bark, sleep >")
   end
 end

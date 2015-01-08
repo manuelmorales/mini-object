@@ -1,7 +1,7 @@
 module MiniObject
   class Inline
-    require 'injectable'
     include Injectable
+    include RemarkableInspect
 
     attr_accessor :inline_name
 
@@ -10,11 +10,13 @@ module MiniObject
       instance_exec self, &block if block
     end
 
-    def inspect
-      "< #{self.class.name}: #{(methods - self.class.instance_methods).join(", ")} >"
+    def remarkable_methods
+      methods - self.class.instance_methods
     end
 
-    alias to_s inspect
+    def remarkable_name
+      "#{inline_name || 'anon'} / Inline"
+    end
 
     # TODO: Explore the possiblity of allowing access to methods and 
     # vars defined outside the block.
