@@ -11,7 +11,7 @@ module MiniObject
     end
 
     def remarkable_methods
-      methods - self.class.instance_methods
+      (methods - self.class.instance_methods).sort
     end
 
     def remarkable_name

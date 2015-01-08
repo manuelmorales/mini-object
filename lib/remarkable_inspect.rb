@@ -26,7 +26,7 @@ module MiniObject
       end
 
       def remarkable_methods
-        (self.instance_methods - Box.instance_methods).map(&:to_s).tap do |mm|
+        (self.instance_methods - Box.instance_methods).sort.map(&:to_s).tap do |mm|
           # Substittues [my_method, my_method=] by [my_method/=]
           mm.grep(/\=$/).each do |setter|
             getter = setter.gsub /\=$/, ''
