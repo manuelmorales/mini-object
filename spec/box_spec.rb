@@ -114,15 +114,18 @@ describe 'Box' do
   it 'looks pretty' do
     stub_const 'BoxApp', Class.new(Box){
       def config; end
+      def config=; end
       def stores; end
     }
 
     subject = BoxApp.new
 
     expect(BoxApp.to_s).to eq('BoxApp')
-    expect(subject.to_s).to eq('< BoxApp : config, stores >')
+    expect(subject.to_s).to eq('< BoxApp : config/=, stores >')
 
-    expect(BoxApp.inspect).to eq('BoxApp( config, stores )')
-    expect(subject.inspect).to eq('< BoxApp : config, stores >')
+    expect(BoxApp.inspect).to eq('BoxApp( config/=, stores )')
+    expect(subject.inspect).to eq('< BoxApp : config/=, stores >')
+
+    expect(Class.new(BoxApp).inspect).to match(/BoxApp:0x.*\( config\/=, stores \)/)
   end
 end

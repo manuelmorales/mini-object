@@ -11,27 +11,37 @@ module MiniObject
     end
 
     def to_s
-      "< #{self.class.name} : #{added_methods.join(", ")} >"
+      "< #{self.class.name} : #{remarkable_methods.join(", ")} >"
     end
 
     alias inspect to_s
 
     def self.inspect
-      "#{name}( #{added_methods.join(", ")} )"
+      "#{formatted_name}( #{remarkable_methods.join(", ")} )"
     end
 
     private
 
-    def dsl
-      ForwardingDSL.new(self, *added_methods)
+    def self.remarkable_methods
+      (self.instance_methods - Box.instance_methods).map(&:to_s).tap do |mm|
+        # Substittues [my_method, my_method=] by [my_method/=]
+        mm.grep(/\=$/).each do |setter|
+          getter = setter.gsub /\=$/, ''
+          if mm.include? getter
+            mm.delete setter
+            mm[mm.find_index(getter)] = setter.gsub /\=$/, '/='
+          end
+        end
+      end
     end
 
-    def self.added_methods
-      self.instance_methods - Box.instance_methods
+    def remarkable_methods
+      self.class.remarkable_methods
     end
 
-    def added_methods
-      self.class.added_methods
+    def self.formatted_name
+      first_ancestor_name = ancestors.map(&:name).compact.first
+      name || "#{first_ancestor_name}:0x#{'%x' % (object_id << 1)}"
     end
   end
 end
