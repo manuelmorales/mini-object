@@ -10,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.version       = MiniObject::VERSION
   spec.authors       = ["Manuel Morales"]
   spec.email         = ['manuelmorales@gmail.com']
-  spec.description   = File.read('README.md').split("\n").reject{|l| l.length == 0 || l =~ /^[#=]+/ }.first
-  spec.summary       = spec.description
+  spec.summary       = 'Easier working with instances instead of classes and dependency injection'
+  spec.description   = 'A set of tools which will make easier to work with objects instead of classes and injecting dependencies.'
   spec.homepage      = "https://github.com/manuelmorales/#{spec.name.gsub('_','-')}"
   spec.license       = "MIT"
 
@@ -21,5 +21,5 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.3"
-  spec.add_development_dependency "rake"
+  spec.add_development_dependency "rake", '~> 10.4'
 end

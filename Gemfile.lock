@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mini_object (0.0.1)
+    mini_object (0.0.2)
 
 GEM
   remote: https://rubygems.org/
@@ -45,5 +45,5 @@ DEPENDENCIES
   codeclimate-test-reporter
   mini_object!
   pry
-  rake
+  rake (~> 10.4)
   rspec
