@@ -5,7 +5,11 @@ module MiniObject
 
     attr_accessor :inline_name
 
-    def initialize name = nil, &block
+    def initialize name = nil, args = {}, &block
+      args.each do |k,v|
+        define_singleton_method(k) { v }
+      end
+
       @inline_name = name || 'inline'
       instance_exec self, &block if block
     end
@@ -17,8 +21,5 @@ module MiniObject
     def remarkable_name
       "#{inline_name || 'anon'} / Inline"
     end
-
-    # TODO: Explore the possiblity of allowing access to methods and 
-    # vars defined outside the block.
   end
 end

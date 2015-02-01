@@ -21,8 +21,9 @@ module MiniObject
           end
         else
           if value == NULL
-            p = instance_variable_get("@#{name}_proc")
-            p || raise("No #{name} defined yet for #{inspect}")
+            p = instance_variable_get("@#{name}_proc") ||
+              self.class.instance_variable_get("@#{name}_default_proc") ||
+              raise("No #{name} defined yet for #{inspect}")
             p.call
           else
             send("#{name}=", value)
@@ -38,14 +39,16 @@ module MiniObject
       end
     end
 
-    def cattr_injectable name
+    def cattr_injectable name, &block
       define_singleton_method name, &Injectable.getsetter_definition_for(name)
       define_singleton_method "#{name}=", &Injectable.setter_definition_for(name)
+      send(name, &block) if block
     end
 
-    def attr_injectable name
+    def attr_injectable name, &block
       define_method name, &Injectable.getsetter_definition_for(name)
       define_method "#{name}=", &Injectable.setter_definition_for(name)
+      instance_variable_set("@#{name}_default_proc", block) if block
     end
 
     def let name, &block
