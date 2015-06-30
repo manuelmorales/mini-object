@@ -99,6 +99,40 @@ In the example, if `app.stores.redis`, the repository
 will inmediately see the new store.
 
 
+## IndexedList
+
+An enumerable of objects that makes it easy to create custom collections.
+It allows to find items by a custom key, similar to a Hash.
+When iterating through the items it only passes just the object, not the keys.
+Allows to define a build proc, so you can add new items with the `add_new` method.
+Plays well with `ForwardingDsl::Getsetter`:
+
+```ruby
+require 'forwarding_dsl'
+require 'mini_object'
+
+class User
+  include ForwardingDsl::Getsetter
+  getsetter :name
+  getsetter :surname
+end
+
+users = MiniObject::IndexedList.new.tap do |l|
+  l.key {|user| user.name }
+  l.build { User.new }
+end
+
+users.add_new do
+  name 'John'
+  surname 'Smith'
+end
+
+users['John'] # => #<User:0x007fd91e05deb8 @name="John", @surname="Smith">
+
+users.each {|user| puts "#{user.name} #{user.surname}" }
+# => John Smith
+```
+
 ## Contributing
 
 Do not forget to run the tests with:

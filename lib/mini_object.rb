@@ -10,4 +10,5 @@ module MiniObject
   autoload :ForwardingDSL, 'forwarding_dsl'
   autoload :RemarkableInspect, 'remarkable_inspect'
   autoload :Box, 'box'
+  autoload :IndexedList, 'indexed_list'
 end
