@@ -23,4 +23,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "forwarding_dsl", "~> 1.0"
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake", '~> 10.4'
+  spec.add_development_dependency "gem-release", '~> 0.7'
 end
