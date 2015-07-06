@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require 'ostruct'
 
 RSpec.describe 'IndexedList' do
   let(:subject_class) { MiniObject::IndexedList }
