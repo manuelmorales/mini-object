@@ -3,6 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/mini_object.svg)](http://badge.fury.io/rb/mini_object)
 [![Build Status](https://travis-ci.org/manuelmorales/mini-object.svg)](https://travis-ci.org/manuelmorales/mini-object)
 [![Code Climate](https://codeclimate.com/github/manuelmorales/mini-object/badges/gpa.svg)](https://codeclimate.com/github/manuelmorales/mini-object)
+[![Test Coverage](https://codeclimate.com/github/manuelmorales/mini-object/badges/coverage.svg)](https://codeclimate.com/github/manuelmorales/mini-object/coverage)
 
 A set of tools which will make easier to work with objects instead of classes
 and injecting dependencies.
