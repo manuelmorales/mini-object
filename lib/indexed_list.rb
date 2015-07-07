@@ -59,6 +59,10 @@ module MiniObject
       store.values.last
     end
 
+    def empty?
+      store.empty?
+    end
+
     private
 
     def store

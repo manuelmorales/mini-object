@@ -110,4 +110,24 @@ RSpec.describe 'IndexedList' do
 
     expect(subject.last).to be value_2
   end
+
+  it 'can be empty' do
+    expect(subject).to be_empty
+
+    subject.add_new do |e|
+      e.name = 'Value 1'
+    end
+
+    expect(subject).not_to be_empty
+  end
+
+  it 'has any?' do
+    expect(subject.any?).to be false
+
+    subject.add_new do |e|
+      e.name = 'Value 1'
+    end
+
+    expect(subject.any?).to be true
+  end
 end
