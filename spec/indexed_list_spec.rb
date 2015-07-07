@@ -98,4 +98,16 @@ RSpec.describe 'IndexedList' do
     subject.merge(subject_2).to_a
     expect(subject.to_a).to eq [value_1]
   end
+
+  it 'has #last' do
+    value_1 = subject.add_new do |e|
+      e.name = 'Value 1'
+    end
+
+    value_2 = subject.add_new do |e|
+      e.name = 'Value 2'
+    end
+
+    expect(subject.last).to be value_2
+  end
 end

@@ -55,6 +55,10 @@ module MiniObject
       super
     end
 
+    def last
+      store.values.last
+    end
+
     private
 
     def store
