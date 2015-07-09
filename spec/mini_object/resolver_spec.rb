@@ -1,4 +1,4 @@
-require_relative 'spec_helper'
+require_relative '../spec_helper'
 
 RSpec.describe 'Resolver' do
   it 'delegates to the result of evaluating the lambda' do
