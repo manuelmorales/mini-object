@@ -139,7 +139,7 @@ users.each {|user| puts "#{user.name} #{user.surname}" }
 Do not forget to run the tests with:
 
 ```bash
-rake
+bundle exec rake
 ```
 
 And bump the version with any of:
