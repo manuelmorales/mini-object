@@ -1,5 +1,5 @@
 require_relative 'spec_helper'
-require 'box'
+require 'mini_object/box'
 
 describe 'Box' do
   it 'allows nested boxes' do

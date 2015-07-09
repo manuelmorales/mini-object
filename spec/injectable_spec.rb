@@ -1,5 +1,5 @@
 require_relative 'spec_helper'
-require 'injectable'
+require 'mini_object/injectable'
 
 RSpec.describe 'Injectable' do
   shared_examples_for 'having an injectable name' do

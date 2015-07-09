@@ -1,14 +1,14 @@
-require "version"
+require 'mini_object/version'
 
 module MiniObject
-  autoload :Lazy, 'lazy'
-  autoload :Injectable, 'injectable'
-  autoload :Resolver, 'resolver'
-  autoload :Inline, 'inline'
-  autoload :Toolbox, 'toolbox'
-  autoload :Tool, 'tool'
-  autoload :ForwardingDSL, 'forwarding_dsl'
-  autoload :RemarkableInspect, 'remarkable_inspect'
-  autoload :Box, 'box'
-  autoload :IndexedList, 'indexed_list'
+  autoload :Lazy, 'mini_object/lazy'
+  autoload :Injectable, 'mini_object/injectable'
+  autoload :Resolver, 'mini_object/resolver'
+  autoload :Inline, 'mini_object/inline'
+  autoload :Toolbox, 'mini_object/toolbox'
+  autoload :Tool, 'mini_object/tool'
+  autoload :ForwardingDSL, 'mini_object/forwarding_dsl'
+  autoload :RemarkableInspect, 'mini_object/remarkable_inspect'
+  autoload :Box, 'mini_object/box'
+  autoload :IndexedList, 'mini_object/indexed_list'
 end
