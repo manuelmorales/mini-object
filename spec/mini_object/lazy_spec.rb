@@ -1,4 +1,4 @@
-require_relative 'spec_helper'
+require_relative '../spec_helper'
 
 RSpec.describe 'Lazy' do
   let(:klass) { double('class', new: instance) }

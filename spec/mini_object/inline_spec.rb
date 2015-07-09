@@ -1,4 +1,4 @@
-require_relative 'spec_helper'
+require_relative '../spec_helper'
 
 RSpec.describe 'Inline' do
   it 'allows defining methods with an initialization block' do
