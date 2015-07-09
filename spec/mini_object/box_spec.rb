@@ -35,7 +35,7 @@ describe 'Box' do
       end
     }
 
-    stub_const 'Config', Class.new(Box) {
+    stub_const 'Configuration', Class.new(Box) {
       def stores
         @stores ||= { default: 'hash' }
       end
@@ -43,11 +43,11 @@ describe 'Box' do
 
     stub_const 'BoxApp', Class.new(Box) {
       def stores
-        @stores ||= Stores.new config: config.stores
+        @stores ||= Stores.new config: self.config.stores
       end
 
       def config
-        @config ||= Config.new
+        @config ||= Configuration.new
       end
     }
 
