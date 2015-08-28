@@ -50,6 +50,15 @@ RSpec.describe 'Injectable' do
 
     subject { subject_class.new }
     it_behaves_like 'having an injectable name'
+
+    it 'allows giving a default' do
+      subject_class.class_eval do
+        a_surname = 'Smith'
+        attr_injectable(:surname) { a_surname }
+      end
+
+      expect(subject.surname).to eq 'Smith'
+    end
   end
 
   context 'cattr_accessor within a class' do
@@ -62,6 +71,11 @@ RSpec.describe 'Injectable' do
 
     subject { subject_class }
     it_behaves_like 'having an injectable name'
+
+    it 'delegates getter to the class' do
+      subject_class.name = 'John'
+      expect(subject_class.new.name).to eq 'John'
+    end
   end
 
   describe '#attributes=' do
