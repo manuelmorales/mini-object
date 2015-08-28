@@ -1,7 +1,0 @@
-lib/lazy.rb 7e4d5fabe9a99f5a2751823cd1ea4e67f446ee2e
-lib/inline.rb df7b92b051d5e5072ad5b486576a801fb3a336a7
-lib/section.rb b05f398196140a836f5e125c20f9988f7a7ef000
-lib/version.rb 2b03a00fee65075ba6f4715792ec212a3b47d654
-lib/resolver.rb c4cf365fd98c2d454e2d11404be070b3d46690f6
-lib/injectable.rb c95a2ea2a7500684d293be0c89196887c72ee68a
-lib/mini_object.rb c4541e47c74f1d904221f2067ad9c0fc0e551ea9
