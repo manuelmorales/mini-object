@@ -11,10 +11,10 @@ module MiniObject
       klass.extend self
     end
 
-    def self.getsetter_definition_for name
+    def self.getsetter_definition_for name, default_block
       lambda do |value = NULL, &block|
       if value == NULL && block == nil
-        get_attribute name
+        get_attribute name, default_block
       else
         set_attribute name, value, block
       end
@@ -28,14 +28,14 @@ module MiniObject
     end
 
     def cattr_injectable name, &block
-      define_singleton_method name, &Injectable.getsetter_definition_for(name)
+      define_singleton_method name, &Injectable.getsetter_definition_for(name, block)
       define_singleton_method "#{name}=", &Injectable.setter_definition_for(name)
       define_method name, -> { self.class.name }
       send(name, &block) if block
     end
 
     def attr_injectable name, &block
-      define_method name, &Injectable.getsetter_definition_for(name)
+      define_method name, &Injectable.getsetter_definition_for(name, block)
       define_method "#{name}=", &Injectable.setter_definition_for(name)
       instance_variable_set("@#{name}_default_proc", block) if block
     end
@@ -48,16 +48,17 @@ module MiniObject
 
     private
 
-    def get_attribute name
+    def get_attribute name, default_block
       if eval "defined? @#{name}"
         # Get via variable
         instance_variable_get :"@#{name}"
       elsif eval "defined? @#{name}_proc"
         # Get via proc
         instance_variable_get(:"@#{name}_proc").call
+      elsif default_block
+        default_block.call
       else
-        # Get default
-        self.class.send(:name)
+        raise "Dependency #{name} not defined yet"
       end
     end
 

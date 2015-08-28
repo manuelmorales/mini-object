@@ -40,11 +40,24 @@ class UsersRepository
 end
 
 users_repo = UsersRepository.new
-users_repo.store{ app.stores.redis }
-```
 
-In the example, if `app.stores.persistent` changes, the repository
-will inmediately see the new store.
+# Regular assignment:
+users_repo.store = Redis.new
+
+# Lambda assignment: The given block will be
+# evaluated each time you call users_repo.store
+users_repo.store{ app.stores.redis }
+
+# Mass assignent
+users_repo.attributes = store: Redis.new
+
+# Default blocks: Will also be executed each time
+class UsersRepository
+  include Injectable
+  attr_injectable(:store) { Redis.new }
+end
+
+```
 
 
 ## RemarkableInspect
