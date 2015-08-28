@@ -39,22 +39,6 @@ module MiniObject
       instance_variable_set("@#{name}_default_proc", block) if block
     end
 
-    def let name, &block
-      var_name = :"@#{name}"
-
-      define_singleton_method "#{name}=" do |value|
-        instance_variable_set var_name, value
-      end
-
-      define_singleton_method name do
-        if instance_variable_defined? var_name
-          instance_variable_get var_name
-        else
-          instance_variable_set var_name, block.call(self)
-        end
-      end
-    end
-
     def attributes= attrs
       attrs.each do |k,v|
         public_send "#{k}=", v
