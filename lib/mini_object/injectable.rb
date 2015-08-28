@@ -30,6 +30,7 @@ module MiniObject
     def cattr_injectable name, &block
       define_singleton_method name, &Injectable.getsetter_definition_for(name)
       define_singleton_method "#{name}=", &Injectable.setter_definition_for(name)
+      define_method name, -> { self.class.name }
       send(name, &block) if block
     end
 
