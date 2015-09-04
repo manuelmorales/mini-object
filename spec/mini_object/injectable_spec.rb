@@ -73,8 +73,12 @@ RSpec.describe 'Injectable' do
     it_behaves_like 'having an injectable name'
 
     it 'delegates getter to the class' do
-      subject_class.name = 'John'
-      expect(subject_class.new.name).to eq 'John'
+      subject_class.class_eval do
+        cattr_injectable :surname
+      end
+        
+      subject_class.surname = 'John'
+      expect(subject_class.new.surname).to eq 'John'
     end
   end
 
